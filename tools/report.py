@@ -9,6 +9,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.image import imread
+from matplotlib.font_manager import FontProperties
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = list(csv.DictReader((ROOT / 'results/results.csv').open()))
@@ -87,7 +88,19 @@ def page(number, title):
     return fig
 
 def paragraph(fig, text, y, size=10, width=103, color='#25354a'):
-    lines = textwrap.wrap(text, width=width)
+    renderer = fig.canvas.get_renderer()
+    font = FontProperties(family='DejaVu Sans', size=size)
+    limit = fig.bbox.width * .85
+    lines, current = [], ''
+    for word in text.split():
+        candidate = (current + ' ' + word).strip()
+        if current and renderer.get_text_width_height_descent(candidate, font, False)[0] > limit:
+            lines.append(current)
+            current = word
+        else:
+            current = candidate
+    if current:
+        lines.append(current)
     for line in lines:
         fig.text(.075, y, line, fontsize=size, color=color, va='top')
         y -= size / (11.69 * 72) * 1.42
