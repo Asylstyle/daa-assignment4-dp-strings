@@ -2,7 +2,7 @@
 
 **Assylzhan Amangeldi | SE2526 | DAA Assignment 4**
 
-[GitHub repository](https://github.com/Asylstyle/daa-assignment4-dp-strings) - branch `main`, final tag `v1.0`.
+[GitHub repository](https://github.com/Asylstyle/daa-assignment4-dp-strings) - branch `main`, figure revision `v1.1`; original release `v1.0` is preserved.
 
 Java 17+ and Maven 3.9+ are required.
 
@@ -19,6 +19,7 @@ Algorithms operate on UTF-16 code units, with unit-cost edits and zero-based sea
 - [Four-page report](REPORT.pdf) and [Markdown version](REPORT.md).
 - [Design recorded before the experiment](docs/EXPERIMENT_DESIGN.md).
 - [450 raw measurement rows](results/results.csv) and [five PNG charts](results/plots/).
+- [Exact plotted points](results/plot_data.csv), including medians and observed timing ranges.
 - [Validation record](results/VALIDATION.md).
 
 `src/main/java/city` contains the five algorithms, counters, input generator and experiment runner. `src/test/java/city` contains JUnit 5 references, edge cases, counter checks and seeded cross-checks.
@@ -45,7 +46,7 @@ Inputs, answers and counters must match exactly. `time_ms` varies with the compu
 
 ## Submission
 
-The release uses 27 substantive commits on `main` and tag `v1.0`. Submit `DAA_Assignment4_Assylzhan_Amangeldi_SE2526.zip` to Moodle and include the repository link. The ZIP includes source, tests, raw data, PNG plots and both report formats; generated build folders are excluded. Moodle submission is a separate step.
+The updated project uses 28 substantive commits on `main`, with one figure-quality commit after the original 27-commit `v1.0` release. Tag `v1.1` identifies the updated figures and report. Submit `DAA_Assignment4_Assylzhan_Amangeldi_SE2526.zip` to Moodle and include the repository link. The ZIP includes source, tests, raw data, PNG plots and both report formats; generated build folders are excluded. Moodle submission is a separate step.
 
 ## AI-use acknowledgement
 

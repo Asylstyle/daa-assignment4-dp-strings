@@ -10,3 +10,7 @@
 | Plots | Log-y common-size operation counts; DP slot counts over larger sizes; DP median times. | Total comparisons in three panels; median times in three panels with log-y axes. |
 
 Protocol: seed 20261108, one independent deterministic case per size/type, 5 untimed warmups and 5 measured runs per case/algorithm. Instrumentation stays enabled. Time is not deterministic; inputs, answers and counters must repeat exactly. No prediction was changed after collecting results.
+
+## Figure revision after data collection - 8 November 2026
+
+The second figure version changes presentation only. Recursive calls and DP cells now have separate panels because they are different work units; six identical DP series are combined after checking their measured values agree. Larger size ranges use explicit logarithmic size axes so short inputs remain visible. Search comparison panels share a vertical scale for direct cross-input comparison, while search timing panels retain explicitly stated independent ranges. Timing plots add the observed minimum-maximum range around each five-run median, without treating it as a confidence interval. The storage plot adds the ratio of measured table slots to measured two-row slots. Fonts, line styles and markers are enlarged for printing, and PNGs use 300 dpi. Inputs, sizes, predictions, counters and raw results are unchanged; `results/plot_data.csv` records the plotted measurements.

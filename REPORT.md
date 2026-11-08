@@ -20,7 +20,7 @@
 ## Method and scope
 
 
-The design was committed before the first experiment (docs/EXPERIMENT_DESIGN.md); no post-run design changes were made. Seed 20261108 fixes inputs, answers and counters, but cannot fix wall-clock time. Each case has five untimed warmups, then five measured invocations with counters enabled; search timing includes LPS construction. There are 450 measured rows. JVM warmup is modest rather than a full JMH study. Java 25.0.2 runs Java-17-targeted classes on Windows amd64. The recursive cap of 8 is a chosen budget, not a measured hardware maximum.
+The design was committed before the first experiment (docs/EXPERIMENT_DESIGN.md). After collecting data, the figures were refined: separate counter panels, clearer size axes, shared comparison scales, a storage ratio and observed timing ranges. Inputs, predictions and raw measurements were unchanged. Seed 20261108 fixes inputs, answers and counters, but cannot fix wall-clock time. Each case has five untimed warmups, then five measured invocations with counters enabled; search timing includes LPS construction. There are 450 measured rows. JVM warmup is modest rather than a full JMH study. Java 25.0.2 runs Java-17-targeted classes on Windows amd64. The recursive cap of 8 is a chosen budget, not a measured hardware maximum.
 
 
 ## Edit distance: prediction versus result
@@ -32,19 +32,19 @@ Disjoint recursion reaches 398,593 calls at n=8, whereas each DP version evaluat
 ![edit work](results/plots/edit_work.png)
 
 
-Disjoint recursion branches rapidly; table and two-row work coincide at n squared cells.
+Disjoint recursion branches rapidly; the separate DP panel combines six identical measured curves.
 
 
 ![edit storage](results/plots/edit_storage.png)
 
 
-Two rows reduce measured DP slots while preserving the same cell updates and answer.
+Two rows use 512.5 times fewer integer slots at n=1024; the ratio comes from measured slots.
 
 
 ## String search: prediction versus result
 
 
-At n=8192 and m=512, late mismatches require 3,932,672 naive comparisons and 16,894 KMP comparisons including preprocessing: a 232.8-fold work ratio. Their medians are 9.5465 and 0.0827 ms. This matches the predicted quadratic versus linear trend for this input design. KMP is not universally cheaper: at the largest early-mismatch case, naive uses 7,681 comparisons versus 8,703 for KMP including LPS. Random cases usually reject naive candidates early. The three panels use separate vertical ranges, so compare labeled values rather than line heights across panels.
+At n=8192 and m=512, late mismatches require 3,932,672 naive comparisons and 16,894 KMP comparisons including preprocessing: a 232.8-fold work ratio. Their medians are 9.5465 and 0.0827 ms. This matches the predicted quadratic versus linear trend for this input design. KMP is not universally cheaper: at the largest early-mismatch case, naive uses 7,681 comparisons versus 8,703 for KMP including LPS. Random cases usually reject naive candidates early. Comparison panels share one vertical scale; timing panels use separate ranges. Timing bands show the minimum and maximum of the five observed runs, not confidence intervals.
 
 
 ![search work](results/plots/search_work.png)
@@ -96,7 +96,7 @@ Measured times were positive but small at short lengths, and some curves were no
 ![Edit median time](results/plots/edit_time.png)
 
 
-Iterative timings grow at larger sizes, but the small cases show warmup and clock noise.
+Logarithmic size axes reveal small inputs; bands show the full observed range of five runs.
 
 
 ## Correctness and evidence

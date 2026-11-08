@@ -10,3 +10,7 @@
 - Runtime: Windows 11 amd64, Eclipse Temurin OpenJDK 25.0.2, Maven 3.10.0, Python 3.14, Matplotlib 3.11.2. The project compiles to Java 17 bytecode.
 
 Limits: short-case timings are noisy, the warmup is modest, case order is fixed, recursive length 8 is a planned cap rather than a discovered failure threshold, and measured integer slots exclude JVM object overhead. Conclusions are limited to these inputs and measurements.
+
+## Figure revision validation
+
+The raw `results.csv` is unchanged from v1.0. All five PNGs were regenerated at 300 dpi (3000 x 1275 pixels) with larger text, distinct markers and line styles. Recursive calls and DP cells are shown in separate panels; the combined DP series is checked against both algorithms and all input types. Comparison panels share a y scale. Timing bands display the five-run observed minimum and maximum; they do not claim statistical confidence. The new storage ratio uses measured allocated slots. `python tools/verify_results.py` now checks every entry in `plot_data.csv` against the raw runs. The revised four-page PDF was rendered and inspected for readable labels, complete captions and unclipped text. This revision changes figures and documentation only.

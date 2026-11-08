@@ -2,6 +2,7 @@
 import csv
 from collections import defaultdict
 from pathlib import Path
+from statistics import median
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +30,19 @@ def main():
     for algorithm in {r['algorithm'] for r in rows}:
         sizes = {int(r['n']) for r in rows if r['algorithm'] == algorithm}
         assert len(sizes) >= 4 and max(sizes) >= 4 * min(sizes)
+    plotted = ROOT / 'results/plot_data.csv'
+    if plotted.exists():
+        points = read(plotted)
+        for point in points:
+            runs = groups[point['algorithm'], point['input'], int(point['n'])]
+            metric = point['metric']
+            values = [int(r['comparisons']) + int(r['lps_comparisons'])
+                      if metric == 'total_comparisons' else float(r[metric]) for r in runs]
+            assert float(point['median']) == median(values), 'Plot median differs from raw data'
+            assert float(point['minimum']) == min(values), 'Plot range differs from raw data'
+            assert float(point['maximum']) == max(values), 'Plot range differs from raw data'
+            assert int(point['runs']) == len(runs) == 5
+        print(f'PASS: {len(points)} plotted measurements match raw medians and ranges')
     if len(sys.argv) > 1:
         replay = read(sys.argv[1])
         assert len(replay) == len(rows)

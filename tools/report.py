@@ -28,7 +28,9 @@ CARD = [
     ('Predictions', 'Disjoint recursion grows exponentially, equal recursion linearly. Both DP versions do n squared cell updates; two rows use linear storage. Naive late-mismatch search grows quadratically because m grows with n; KMP stays linear.'),
     ('Planned plots', 'Common-size edit work (log y), DP storage (log y), total search comparisons (log y), median edit and search timings (log y). Each chart answers one growth or resource question.'),
 ]
-METHOD = ('The design was committed before the first experiment (docs/EXPERIMENT_DESIGN.md); no post-run design changes were made. '
+METHOD = ('The design was committed before the first experiment (docs/EXPERIMENT_DESIGN.md). '
+          'After collecting data, the figures were refined: separate counter panels, clearer size axes, shared comparison scales, '
+          'a storage ratio and observed timing ranges. Inputs, predictions and raw measurements were unchanged. '
           'Seed 20261108 fixes inputs, answers and counters, but cannot fix wall-clock time. Each case has five untimed warmups, '
           'then five measured invocations with counters enabled; search timing includes LPS construction. '
           'There are 450 measured rows. JVM warmup is modest rather than a full JMH study. '
@@ -43,7 +45,8 @@ SEARCH = (f'At n=8192 and m=512, late mismatches require 3,932,672 naive compari
           f'a {3932672/16894:.1f}-fold work ratio. Their medians are {timing("naive", "late_mismatch", 8192):.4f} and '
           f'{timing("kmp", "late_mismatch", 8192):.4f} ms. This matches the predicted quadratic versus linear trend for this input design. '
           'KMP is not universally cheaper: at the largest early-mismatch case, naive uses 7,681 comparisons versus 8,703 for KMP including LPS. '
-          'Random cases usually reject naive candidates early. The three panels use separate vertical ranges, so compare labeled values rather than line heights across panels.')
+          'Random cases usually reject naive candidates early. Comparison panels share one vertical scale; timing panels use separate ranges. '
+          'Timing bands show the minimum and maximum of the five observed runs, not confidence intervals.')
 ANSWERS = [
     ('Which search input was slowest?', 'Late mismatch at n=8192 was the slowest naive search in this experiment. Every candidate matches 511 characters before failing on the final B, so naive repeatedly scans the same text. KMP retains prefix information and avoids most repeated comparisons.'),
     ('How large could recursive edit distance handle?', 'The largest tested length was 8 for both strings; disjoint inputs already caused 398,593 recursive calls. The experiment deliberately stopped there because the branching recurrence grows exponentially. No failure threshold or maximum feasible length was measured, so 8 is a tested cap rather than a hardware limit.'),
@@ -56,11 +59,11 @@ TIME = ('Measured times were positive but small at short lengths, and some curve
         f'{timing("naive", "early_mismatch", 8192):.4f}/{timing("kmp", "early_mismatch", 8192):.4f} ms. '
         'Operation counts provide more stable evidence of growth than a claim based on one laptop timing. These numbers are observations, not universal speed guarantees.')
 CAPTIONS = {
-    'edit_work.png': 'Disjoint recursion branches rapidly; table and two-row work coincide at n squared cells.',
-    'edit_storage.png': 'Two rows reduce measured DP slots while preserving the same cell updates and answer.',
+    'edit_work.png': 'Disjoint recursion branches rapidly; the separate DP panel combines six identical measured curves.',
+    'edit_storage.png': 'Two rows use 512.5 times fewer integer slots at n=1024; the ratio comes from measured slots.',
     'search_work.png': 'Late mismatches separate naive quadratic growth from KMP linear work; preprocessing is included.',
     'search_time.png': 'Late mismatches cost naive the most time; early-mismatch and random timings need their own scale.',
-    'edit_time.png': 'Iterative timings grow at larger sizes, but the small cases show warmup and clock noise.',
+    'edit_time.png': 'Logarithmic size axes reveal small inputs; bands show the full observed range of five runs.',
 }
 
 def markdown():
